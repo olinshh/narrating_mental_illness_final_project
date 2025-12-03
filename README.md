@@ -1,0 +1,1 @@
+Final Project for Speaking Our Minds: Narrating Mental Illness class
