@@ -103,12 +103,16 @@ function update () {
     if (!isGameRunning) return;
 
     if (mentalClarity < 100) {
-        let shakeAmount = (100 - mentalClarity) / 5000; 
-        this.cameras.main.shake(100, shakeAmount); // keep shaking until we reach mental clarity
+        let stressFactor = (100 - mentalClarity) / 100;
+        let shakeAmount = stressFactor * stressFactor * 0.025; 
+        this.cameras.main.shake(100, shakeAmount); // shake reduces as clarity goes up
     }
 
     if (mentalClarity >= 100) {
         instructionText.setText("The mind is calm now.");
+        instructionText.setStyle({ fontSize: '40px', fontStyle: 'bold', fill: '#ffffff', stroke: '#000000', strokeThickness: 4 });
+        instructionText.setX(400);
+        instructionText.setOrigin(0.5);
 
         if (!this.playAgainBtn) {
             this.playAgainBtn = this.add.text(400, 300, 'PLAY AGAIN', { 
@@ -124,7 +128,12 @@ function update () {
                 this.ball.setPosition(100, 500);
                 this.ball.setVelocity(0, 0);
                 scoreText.setText('Mental Clarity: 0%');
+                
                 instructionText.setText('Use ARROW KEYS to move & jump');
+                instructionText.setStyle({ fontSize: '20px', fontStyle: 'normal', fill: '#aaa', strokeThickness: 0 });
+                instructionText.setX(250);
+                instructionText.setOrigin(0);
+
                 this.playAgainBtn.destroy();
                 this.playAgainBtn = null;
             });
