@@ -109,11 +109,30 @@ function update () {
 
     if (mentalClarity >= 100) {
         instructionText.setText("The mind is calm now.");
+
+        if (!this.playAgainBtn) {
+            this.playAgainBtn = this.add.text(400, 300, 'PLAY AGAIN', { 
+                fontSize: '32px', 
+                fill: '#fff', 
+                backgroundColor: '#000', 
+                padding: { x: 20, y: 10 } 
+            })
+            .setOrigin(0.5)
+            .setInteractive({ useHandCursor: true })
+            .on('pointerdown', () => {
+                mentalClarity = 0;
+                this.ball.setPosition(100, 500);
+                this.ball.setVelocity(0, 0);
+                scoreText.setText('Mental Clarity: 0%');
+                instructionText.setText('Use ARROW KEYS to move & jump');
+                this.playAgainBtn.destroy();
+                this.playAgainBtn = null;
+            });
+        }
     }
 
-    // Smooth color transition
     const startColor = Phaser.Display.Color.ValueToColor(0x220000);
-    const endColor = Phaser.Display.Color.ValueToColor(0x4488ff);
+    const endColor = Phaser.Display.Color.ValueToColor(0x4488ff); // color transition
     
     const colorObject = Phaser.Display.Color.Interpolate.ColorWithColor(
         startColor, 
@@ -125,9 +144,8 @@ function update () {
     const color = Phaser.Display.Color.GetColor(colorObject.r, colorObject.g, colorObject.b);
     this.bg.fillColor = color;
 
-    // Controls
     if (this.cursors.left.isDown) {
-        this.ball.setVelocityX(-200);
+        this.ball.setVelocityX(-200); // controls
     } else if (this.cursors.right.isDown) {
         this.ball.setVelocityX(200);
     } else {
@@ -145,8 +163,7 @@ function update () {
 }
 
 function checkScore (ball, sensor) {
-    // Check if ball is moving downwards
-    if (ball.body.velocity.y > 0 && mentalClarity < 100) {
+    if (ball.body.velocity.y > 0 && mentalClarity < 100) {// if ball moving down and still points to gain
         
         if (!ball.isScoring) {
             ball.isScoring = true;
