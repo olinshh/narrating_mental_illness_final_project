@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Basketball for Mental Healht</title>
+    <title>Basketball for Mental Health</title>
     <script src="https://cdn.jsdelivr.net/npm/phaser@3.60.0/dist/phaser-arcade-physics.min.js"></script>
     <style>
         body { margin: 0; display: flex; justify-content: center; background: #000; }
@@ -108,11 +108,22 @@ function update () {
     }
 
     if (mentalClarity >= 100) {
-        this.bg.fillColor = 0x4488ff; // make screen blue when we have mental clarity
         instructionText.setText("The mind is calm now.");
-    } else {
-        // must implement smooth color transition logic here
     }
+
+    // Smooth color transition
+    const startColor = Phaser.Display.Color.ValueToColor(0x220000);
+    const endColor = Phaser.Display.Color.ValueToColor(0x4488ff);
+    
+    const colorObject = Phaser.Display.Color.Interpolate.ColorWithColor(
+        startColor, 
+        endColor, 
+        100, 
+        Math.min(mentalClarity, 100)
+    );
+
+    const color = Phaser.Display.Color.GetColor(colorObject.r, colorObject.g, colorObject.b);
+    this.bg.fillColor = color;
 
     // Controls
     if (this.cursors.left.isDown) {
